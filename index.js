@@ -1,36 +1,27 @@
 const R = require('ramda');
 
 
-const id = (state) => Object.assign({},
-        state
-    );
+const id = (state) => Object.assign({}, state);
 
-const a = (state) => Object.assign({},
-        state,
-        { something: true }
-     )
+const a = (state) => Object.assign({}, state, { x: true })
 
-const b = (state) => Object.assign({},
-        state,
-        { something: false }
-     )
+const b = (state) => Object.assign({}, state, { x: false })
 
-const c = (state) => Object.assign({},
-        state,
-        { something: true,
-            name: 'thomas'
-        }
-     )
+const c = (state) => Object.assign({}, state, { x: true, y: false })
 
 const init = {}
 
+
 // id
 
-R.equals(init, id(init)); // true
+const x = R.compose(id, a);
+const y = R.compose(a, id);
+
+const res1 = R.equals(x(init), y(init)); // true
 
 // associative
 
-const one = R.compose(R.compose(a, b), c)(init)
-const two = R.compose(a, R.compose(b, c))(init)
+const one = R.compose(R.compose(a, b), c)
+const two = R.compose(a, R.compose(b, c))
 
-R.equals(one, two); // true
+const res2 = R.equals(one(init), two(init)); // true
